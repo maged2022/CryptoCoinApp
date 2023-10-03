@@ -25,7 +25,6 @@ class CoinImageService {
     private func downloadingCoins(url: String) {
      
         NetworkService.fetchData(from: url)
-            .receive(on: DispatchQueue.main)
             .map { data in
                 return UIImage(data: data)
                 
