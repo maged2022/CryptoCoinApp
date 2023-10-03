@@ -9,30 +9,50 @@ import Foundation
 import Combine
 
 class NetworkService {
-    enum NetworkError: Error {
-        case badURL, requestFailed, invalidResponse
+    enum NetworkError: LocalizedError {
+        case badURLResponse(url: URL)
+        case unknown
+        
+        var description: String {
+            switch self {
+            case .badURLResponse(let url):
+                return "bad url server \(url)"
+            case .unknown:
+                return "unknown Error !"
+            }
+            
+        }
+        
     }
     
-    func fetchData<T: Decodable>(from urlString: String) -> AnyPublisher<T, Error> {
+    static func fetchData<T: Decodable>(from urlString: String) -> AnyPublisher<T, Error> {
         guard let url = URL(string: urlString) else {
-            return Fail(error: NetworkError.badURL)
+            return Fail(error: NetworkError.unknown)
                 .eraseToAnyPublisher()
         }
         
         return URLSession.shared.dataTaskPublisher(for: url)
-            .tryMap(handleResponse)
+            .tryMap { try handleResponse(output: $0, url: url) }
             .decode(type: T.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
-    func handleResponse( output: URLSession.DataTaskPublisher.Output) throws -> Data {
+    static func handleResponse(output: URLSession.DataTaskPublisher.Output, url: URL) throws -> Data {
         guard let httpResponse = output.response as? HTTPURLResponse,
               200..<300 ~= httpResponse.statusCode else {
-            throw NetworkError.requestFailed
+            throw NetworkError.badURLResponse(url: url)
         }
         return output.data
     }
     
+    static func handleCompletion(completion: Subscribers.Completion<Error>) {
+        switch completion {
+        case .finished:
+            break
+        case .failure(let error):
+            print("Network request error: \(error.localizedDescription)")
+        }
+    }
 }
 
