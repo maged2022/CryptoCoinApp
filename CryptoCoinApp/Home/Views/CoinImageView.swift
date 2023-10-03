@@ -10,8 +10,8 @@ import SwiftUI
 struct CoinImageView: View {
     @StateObject var vm : CoinImageViewModel
     
-    init(url: String) {
-        _vm = StateObject(wrappedValue: CoinImageViewModel(url: url))
+    init(coinModel: CoinModel) {
+        _vm = StateObject(wrappedValue: CoinImageViewModel(coinModel: coinModel))
     }
     var body: some View {
         if let image = vm.image {
