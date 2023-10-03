@@ -16,8 +16,10 @@ class LocalFileManager {
     
     func saveImage(_ image: UIImage, imageName: String, fileName: String)  {
         
+        // Create Folder
         createFolderIfNeeded(fileName: fileName)
         
+        // get path for image
         guard
             let data = image.pngData(),
             let fileURL = getURLImage(imageName: imageName, fileName: fileName) else {
@@ -25,6 +27,7 @@ class LocalFileManager {
             return
         }
         
+        // Save image to path
         do {
             try data.write(to: fileURL)
         } catch {
