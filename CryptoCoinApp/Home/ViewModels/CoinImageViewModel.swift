@@ -13,15 +13,17 @@ class CoinImageViewModel: ObservableObject {
     var coinImageService: CoinImageService
     var cancellables = Set<AnyCancellable>()
     let fileManager = LocalFileManager.instance
+    let imageName: String
     
     init(coinModel: CoinModel) {
+        imageName = coinModel.id
         coinImageService = CoinImageService(url: coinModel.image)
         getCoinImage(coinModel: coinModel)
        
     }
     
     func  getCoinImage(coinModel: CoinModel){
-        if let imaage =  fileManager.getImage(name: coinModel.id) {
+        if let imaage =  fileManager.getImage(name: imageName) {
           image = imaage
             print("Downloading from fileManager ...")
         }else {
@@ -32,15 +34,18 @@ class CoinImageViewModel: ObservableObject {
     
     func  downLoadCoinImage(coinModel: CoinModel) {
       coinImageService.$image
-          .sink {[weak self] receivedImage in
-              guard
-                let self = self,
-                let image = receivedImage
-              else { return }
-              
-              self.image = image
-              self.fileManager.saveImage(image, withName: coinModel.id)
-          }
+            .sink(receiveCompletion: { _ in
+                //
+            }, receiveValue: { [weak self] receivedImage in
+                guard
+                  let self = self,
+                  let image = receivedImage
+                else { return }
+                
+                self.image = image
+                self.fileManager.saveImage(image, withName: self.imageName)
+            })
+          
           .store(in: &cancellables)
     }
     
