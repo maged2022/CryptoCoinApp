@@ -14,6 +14,7 @@ class CoinImageViewModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
     let fileManager = LocalFileManager.instance
     let imageName: String
+    let fileName: String = "Coins_Images"
     
     init(coinModel: CoinModel) {
         imageName = coinModel.id
@@ -23,7 +24,7 @@ class CoinImageViewModel: ObservableObject {
     }
     
     func  getCoinImage(coinModel: CoinModel){
-        if let imaage =  fileManager.getImage(name: imageName) {
+        if let imaage =  fileManager.getImage(imageName: imageName, fileName: fileName){
           image = imaage
             print("Downloading from fileManager ...")
         }else {
@@ -43,7 +44,7 @@ class CoinImageViewModel: ObservableObject {
                 else { return }
                 
                 self.image = image
-                self.fileManager.saveImage(image, withName: self.imageName)
+                self.fileManager.saveImage(image, imageName: self.imageName, fileName:self.fileName)
             })
           
           .store(in: &cancellables)
