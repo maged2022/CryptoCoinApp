@@ -16,7 +16,7 @@ struct HomeRowView: View {
             HStack {
                 Text("\(coinModel.rank)")
                     .frame(minWidth: 30)
-                Circle()
+                CoinImageView(url: coinModel.image)
                     .frame(width: 30, height: 30)
                 Text(coinModel.id)
                     .font(.headline)

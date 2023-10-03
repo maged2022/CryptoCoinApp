@@ -25,7 +25,7 @@ class NetworkService {
         
     }
     
-    static func fetchData<T: Decodable>(from urlString: String) -> AnyPublisher<T, Error> {
+    static func fetchData(from urlString: String) -> AnyPublisher<Data, Error> {
         guard let url = URL(string: urlString) else {
             return Fail(error: NetworkError.unknown)
                 .eraseToAnyPublisher()
@@ -33,7 +33,6 @@ class NetworkService {
         
         return URLSession.shared.dataTaskPublisher(for: url)
             .tryMap { try handleResponse(output: $0, url: url) }
-            .decode(type: T.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
