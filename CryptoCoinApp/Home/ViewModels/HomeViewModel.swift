@@ -10,6 +10,7 @@ import Combine
 
 class HomeViewModel: ObservableObject{
     @Published var allCoins: [CoinModel] = []
+    @Published  var searchText = ""
     let networkService = CoinsManager()
     
     var anycancellables =  Set<AnyCancellable>()
