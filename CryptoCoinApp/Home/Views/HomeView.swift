@@ -11,6 +11,7 @@ struct HomeView: View {
     
     @StateObject var vm = HomeViewModel()
     @State private var showProfolio: Bool = false
+    @State private var searchText = ""
   
     var body: some View {
         
@@ -23,6 +24,10 @@ struct HomeView: View {
             // Content
             VStack {
                 homeHeaderView
+                
+                SearchBarView(searchText: $searchText)
+                    .padding()
+                
                 columnsTitle
                 if !showProfolio {
                     listHomeView
