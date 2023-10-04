@@ -24,12 +24,12 @@ class CoinImageService {
     
     private func downloadingCoins(url: String) {
      
-        NetworkService.fetchData(from: url)
+        NetworkingManager.fetchData(from: url)
             .map { data in
                 return UIImage(data: data)
                 
             }
-            .sink(receiveCompletion: NetworkService.handleCompletion,
+            .sink(receiveCompletion: NetworkingManager.handleCompletion,
                   receiveValue: { [weak self] imageReceived in
                 self?.image = imageReceived
             })

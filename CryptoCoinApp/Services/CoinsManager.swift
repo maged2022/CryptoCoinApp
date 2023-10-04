@@ -21,9 +21,9 @@ class CoinsManager {
     
      private func downloadingCoins() {
          
-         NetworkService.fetchData(from: url)
+         NetworkingManager.fetchData(from: url)
              .decode(type: [CoinModel].self, decoder: JSONDecoder())
-             .sink(receiveCompletion: NetworkService.handleCompletion,
+             .sink(receiveCompletion: NetworkingManager.handleCompletion,
                    receiveValue: { [weak self] receivedValue in
                  self?.allCoins = receivedValue
              })
