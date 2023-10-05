@@ -16,7 +16,7 @@ struct HomeStateView: View {
             
             ForEach(vm.stat) { stat in
                 StatisticViwe(stat: stat)
-                    .frame(width: UIScreen.main.bounds.width / 3, alignment: .leading)
+                    .frame(width: UIScreen.main.bounds.width / 3)
                 
             }
           
