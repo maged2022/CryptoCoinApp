@@ -25,6 +25,16 @@ struct HomeView: View {
             VStack {
                 homeHeaderView
                 
+                if showProfolio {
+                    HomeStateView(showProfile: $showProfolio)
+                        .transition(AnyTransition.move(edge: .trailing))
+                }
+                if !showProfolio {
+                    HomeStateView(showProfile: $showProfolio)
+                        .transition(AnyTransition.move(edge: .leading))
+                }
+              
+                    
                 SearchBarView(searchText: $vm.searchText)
                     .padding()
                 
@@ -64,7 +74,7 @@ extension HomeView {
             
                 .rotationEffect(Angle(degrees: showProfolio ? 180 : 0))
                 .onTapGesture {
-                    withAnimation(.spring()) {
+                    withAnimation(.easeInOut(duration: 3)) {
                         showProfolio.toggle()
                     }
                        
