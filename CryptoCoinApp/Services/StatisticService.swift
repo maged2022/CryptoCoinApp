@@ -11,42 +11,25 @@ import Foundation
 import Combine
 
 class StatisticService {
-
-    @Published var allCoins: [CoinModel] = []
-    let url = "https://api.coingecko.com/api/v3/global"
     
+    @Published var stat: MarketDataModel?
     var cancellables = Set<AnyCancellable>()
     
     init() {
-        downloadingStatics()
+        getData()
     }
     
-
-    func downloadingStatics() {
+    
+    private func getData() {
         let urlString = "https://api.coingecko.com/api/v3/global"
-
-         NetworkingManager.fetchData(from: urlString)
+        
+        NetworkingManager.fetchData(from: urlString)
             .decode(type: GlobalData.self, decoder: JSONDecoder())
-            .map { globalData -> MarketDataModel?  in
-                print("globalData : \(globalData)........")
-                print("----------------------")
-               
-                // Access and process properties directly
-                if let marketData = globalData.data {
-                    print("marketData : \(marketData)........")
-                    
-                  return marketData
-                } else {
-                    return  nil
-                }
-            }
-            .sink(receiveCompletion:  NetworkingManager.handleCompletion) { recivedData in
-               //
+            .sink(receiveCompletion:  NetworkingManager.handleCompletion) { [weak self] recivedData in
+                self?.stat = recivedData.data
             }
             .store(in: &cancellables)
     }
-
-    // end class
 }
 
 

@@ -93,8 +93,8 @@
 			children = (
 				120140A22AC8AE0000BAC43C /* CryptoCoinAppApp.swift */,
 				126FAADB2AC9CD1D0070343B /* Home */,
-				120140B02AC8AE2D00BAC43C /* Extensions */,
 				12DAF8402ACA82EF00A64B1B /* Services */,
+				120140B02AC8AE2D00BAC43C /* Extensions */,
 				120140C92AC8BA9500BAC43C /* Assets.xcassets */,
 				120140A82AC8AE0200BAC43C /* Preview Content */,
 			);
