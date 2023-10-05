@@ -15,7 +15,6 @@ struct AnimationCircle: View {
             .stroke(lineWidth: 5)
             .scaleEffect(animate ? 1 : 0)
             .opacity(animate ? 0 : 1)
-            .animation(animate ?  .easeInOut(duration: 1) : .none)
-        
+            .animation( animate ?  .easeInOut(duration: 1) : .none , value: animate)
     }
 }

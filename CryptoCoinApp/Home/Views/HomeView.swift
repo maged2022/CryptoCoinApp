@@ -44,7 +44,7 @@ struct HomeView: View {
                 }
                 
                 if showProfolio {
-                    listProfolioView
+                   listProfolioView
                 }
              
             }
@@ -61,7 +61,7 @@ extension HomeView {
     var homeHeaderView: some View  {
         HStack{
             CircleView(iconName: showProfolio ? "plus" : "info")
-            
+                .animation(.none, value: showProfolio)
                 .background(
                     AnimationCircle(animate: $showProfolio)
                 )
@@ -71,14 +71,12 @@ extension HomeView {
                 .font(.title2)
             Spacer()
             CircleView(iconName: "chevron.right")
-            
                 .rotationEffect(Angle(degrees: showProfolio ? 180 : 0))
+    
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 3)) {
+                    withAnimation(.easeInOut(duration: 1)) {
                         showProfolio.toggle()
                     }
-                       
-                 
                 }
         }
         .padding(.horizontal)
