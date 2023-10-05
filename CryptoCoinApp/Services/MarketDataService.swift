@@ -10,9 +10,9 @@
 import Foundation
 import Combine
 
-class StatisticService {
+class MarketDataService {
     
-    @Published var stat: MarketDataModel?
+    @Published var marketDataModel: MarketDataModel?
     var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -26,7 +26,7 @@ class StatisticService {
         NetworkingManager.fetchData(from: urlString)
             .decode(type: GlobalData.self, decoder: JSONDecoder())
             .sink(receiveCompletion:  NetworkingManager.handleCompletion) { [weak self] recivedData in
-                self?.stat = recivedData.data
+                self?.marketDataModel = recivedData.data
             }
             .store(in: &cancellables)
     }

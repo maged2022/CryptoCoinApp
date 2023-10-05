@@ -12,16 +12,17 @@ struct HomeStateView: View {
     @Binding var showProfile: Bool
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-        HStack {
+            HStack() {
             
             ForEach(vm.stat) { stat in
                 StatisticViwe(stat: stat)
-                    .frame(width: UIScreen.main.bounds.width / 3)
+                    .frame(width: UIScreen.main.bounds.width / 3, alignment: .leading)
                 
             }
           
         }
-        .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+        .frame(width: UIScreen.main.bounds.width,
+               alignment: showProfile ? .trailing : .leading)
         }
     }
 

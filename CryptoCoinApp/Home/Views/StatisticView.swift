@@ -10,7 +10,7 @@ import SwiftUI
 struct StatisticViwe: View {
     let stat: StatisticModel
     var body: some View {
-        VStack{
+        VStack(alignment: .leading){
             Text(stat.title)
                 .font(.caption)
                 .foregroundColor(Color.themeColor.secondaryTextColor)

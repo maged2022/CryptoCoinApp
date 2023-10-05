@@ -12,13 +12,10 @@ class HomeViewModel: ObservableObject{
     @Published var allCoins: [CoinModel] = []
     @Published  var searchText = ""
     
-    @Published  var stat : [StatisticModel]  = [
-    StatisticModel(title: "Market Cap", value: "2334", percentageChange: 073),
-    StatisticModel(title: "Volume", value: "335"),
-    StatisticModel(title: "Third", value: "335", percentageChange: 0.3),
-    StatisticModel(title: "final", value: "335", percentageChange: 0.3)
-    ]
+    @Published  var stat : [StatisticModel]  = []
+    
     let networkService = CoinsManager()
+    let marketDataService = MarketDataService()
     
     var cancellables =  Set<AnyCancellable>()
     
@@ -27,6 +24,8 @@ class HomeViewModel: ObservableObject{
     }
     
     func getCoins() {
+        
+        // Update allCoins
         networkService.$allCoins
             .combineLatest($searchText)
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
@@ -45,6 +44,31 @@ class HomeViewModel: ObservableObject{
                 self?.allCoins = filteredValue
             }
             .store(in: &cancellables)
+        
+        
+        // Update statistic
+        marketDataService.$marketDataModel
+            .map { receivedData -> [StatisticModel] in
+                var stat: [StatisticModel] = []
+                guard let validData = receivedData else {
+                    return stat
+                }
+                let marketCap = StatisticModel(title: "Market Cap", value: validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
+                
+                let volume = StatisticModel(title: "Volume", value: validData.volumeeCap)
+                 
+                let third = StatisticModel(title: "Third", value:  validData.btcDomain)
+                                               
+                let final = StatisticModel(title: "Final", value:  validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
+                                               
+                stat.append(contentsOf: [marketCap, volume, third, final])
+                return stat
+            }
+            .sink { [weak self] staticDataReceived in
+                self?.stat = staticDataReceived
+            }
+            .store(in: &cancellables)
+        
     }
     
     
