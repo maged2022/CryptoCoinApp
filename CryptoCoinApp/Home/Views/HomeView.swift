@@ -26,11 +26,11 @@ struct HomeView: View {
                 homeHeaderView
                 
                 if showProfolio {
-                    HomeStateView(showProfile: $showProfolio)
+                    HomeStateView(vm: vm, showProfile: $showProfolio)
                         .transition(AnyTransition.move(edge: .trailing))
                 }
                 if !showProfolio {
-                    HomeStateView(showProfile: $showProfolio)
+                    HomeStateView(vm: vm, showProfile: $showProfolio)
                         .transition(AnyTransition.move(edge: .leading))
                 }
               

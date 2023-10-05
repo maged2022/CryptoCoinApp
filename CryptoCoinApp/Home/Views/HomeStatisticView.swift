@@ -8,18 +8,13 @@
 import SwiftUI
 
 struct HomeStateView: View {
-    let Stat : [StatisticModel]  = [
-    StatisticModel(title: "Market Cap", value: "2334", percentageChange: 073),
-    StatisticModel(title: "Volume", value: "335"),
-    StatisticModel(title: "Third", value: "335", percentageChange: 0.3),
-    StatisticModel(title: "final", value: "335", percentageChange: 0.3)
-    ]
+    @ObservedObject var vm: HomeViewModel
     @Binding var showProfile: Bool
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
         HStack {
             
-            ForEach(Stat) { stat in
+            ForEach(vm.stat) { stat in
                 StatisticViwe(stat: stat)
                     .frame(width: UIScreen.main.bounds.width / 3)
                 

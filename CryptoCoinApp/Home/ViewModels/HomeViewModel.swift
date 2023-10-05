@@ -11,6 +11,13 @@ import Combine
 class HomeViewModel: ObservableObject{
     @Published var allCoins: [CoinModel] = []
     @Published  var searchText = ""
+    
+    @Published  var stat : [StatisticModel]  = [
+    StatisticModel(title: "Market Cap", value: "2334", percentageChange: 073),
+    StatisticModel(title: "Volume", value: "335"),
+    StatisticModel(title: "Third", value: "335", percentageChange: 0.3),
+    StatisticModel(title: "final", value: "335", percentageChange: 0.3)
+    ]
     let networkService = CoinsManager()
     
     var cancellables =  Set<AnyCancellable>()
