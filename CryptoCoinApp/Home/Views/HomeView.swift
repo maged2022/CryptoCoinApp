@@ -11,6 +11,7 @@ struct HomeView: View {
     
     @StateObject var vm = HomeViewModel()
     @State private var showProfolio: Bool = false
+    @State private var showProfolioView: Bool = false // show sheet of profolioView
    
   
     var body: some View {
@@ -49,6 +50,11 @@ struct HomeView: View {
              
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .sheet(isPresented: $showProfolioView) {
+            ProtofioloView( vm: vm)
+        }
         
     }
 }
@@ -65,6 +71,11 @@ extension HomeView {
                 .background(
                     AnimationCircle(animate: $showProfolio)
                 )
+                .onTapGesture {
+                    if showProfolio {
+                        showProfolioView.toggle()
+                    }
+                }
             Spacer()
             Text("prive live")
                 .fontWeight(.heavy)
@@ -113,7 +124,7 @@ extension HomeView {
     var listProfolioView: some View {
         List {
             ForEach(vm.allCoins) { coin in
-                HomeRowView(coinModel: coin, showProfolio: showProfolio)
+               // HomeRowView(coinModel: coin, showProfolio: showProfolio)
             }
            .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)) //
         }

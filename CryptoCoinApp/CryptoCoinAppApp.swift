@@ -13,8 +13,7 @@ struct CryptoCoinAppApp: App {
         WindowGroup {
             NavigationView {
                 HomeView()
-                    .navigationBarHidden(true)
-                    .navigationBarBackButtonHidden(true)
+                   
             }
         }
     }
