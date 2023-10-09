@@ -103,6 +103,11 @@ struct ProtofioloView: View {
                 
             }
             .navigationTitle("Edit Profiolo..")
+            .onChange(of: vm.searchText) { newValue in
+                if newValue == "" {
+                    selectedCoin = nil
+                }
+            }
             
         }
     }
