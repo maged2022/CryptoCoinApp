@@ -122,15 +122,16 @@ extension HomeView {
     }
     
     var listProfolioView: some View {
-        List {
-            ForEach(vm.allCoins) { coin in
-               // HomeRowView(coinModel: coin, showProfolio: showProfolio)
+            List {
+                ForEach(vm.profolioCoins) { coin in
+                    HomeRowView(coinModel: coin, showProfolio: showProfolio)
+                }
+               .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)) //
             }
-           .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)) //
+            .listStyle(PlainListStyle())
+            .transition(AnyTransition.move(edge: .leading))
+
         }
-        .listStyle(PlainListStyle())
-        .transition(AnyTransition.move(edge: .trailing))
-    }
 }
 
 

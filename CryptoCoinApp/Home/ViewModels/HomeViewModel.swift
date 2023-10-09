@@ -10,23 +10,26 @@ import Combine
 
 class HomeViewModel: ObservableObject{
     @Published var allCoins: [CoinModel] = []
+    @Published var profolioCoins: [CoinModel] = []
     @Published  var searchText = ""
     
     @Published  var stat : [StatisticModel]  = []
+    @Published var profolioArr: [ProfolioEntity] = []
     
-    let networkService = CoinsManager()
-    let marketDataService = MarketDataService()
-    
+    private let allCoinService = AllCoinService()
+    private let marketDataService = MarketDataService()
+    private let profolioService = ProfolioService()
+
     var cancellables =  Set<AnyCancellable>()
     
     init () {
-        getCoins()
+        addSubscirpers()
     }
     
-    func getCoins() {
+    func addSubscirpers() {
         
-        // Update allCoins
-        networkService.$allCoins
+        // Update allCoins and filterData searching
+        allCoinService.$allCoins
             .combineLatest($searchText)
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .map({ coins, text -> [CoinModel] in
@@ -54,11 +57,8 @@ class HomeViewModel: ObservableObject{
                     return stat
                 }
                 let marketCap = StatisticModel(title: "Market Cap", value: validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
-                
                 let volume = StatisticModel(title: "Volume", value: validData.volumeeCap)
-                 
                 let third = StatisticModel(title: "Third", value:  validData.btcDomain)
-                                               
                 let final = StatisticModel(title: "Final", value:  validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
                                                
                 stat.append(contentsOf: [marketCap, volume, third, final])
@@ -69,7 +69,28 @@ class HomeViewModel: ObservableObject{
             }
             .store(in: &cancellables)
         
+        // Updating Profolio
+        $allCoins
+            .combineLatest(profolioService.$profolioEntities)
+           
+            .map { coins, profolioEntities -> [CoinModel] in
+                
+                return coins.compactMap { coin -> CoinModel? in
+                    guard let entity = profolioEntities.first(where: {$0.profolioID == coin.id })  else {
+                        return nil
+                    }
+                    return coin.updateHoldings(amount: entity.profolioAmount)
+                }
+            }
+        
+            .sink { [weak self] receivedCoins in
+                self?.profolioCoins = receivedCoins
+            }
+            .store(in: &cancellables)
     }
     
-    
+    func updateProfolio(coin: CoinModel, amount: Double) {
+        profolioService.updateProfolio(coin: coin, amount: amount)
+    }
+     
 }

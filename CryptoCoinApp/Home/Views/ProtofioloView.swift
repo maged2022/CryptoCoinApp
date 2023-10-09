@@ -28,7 +28,7 @@ struct ProtofioloView: View {
                         ForEach(vm.allCoins) { coin in
                             ProfolioRowView(coin: coin)
                                 .onTapGesture {
-                                    selectedCoin = coin
+                                    handleTaped(coin: coin)
                                 }
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 20)
@@ -71,7 +71,7 @@ struct ProtofioloView: View {
                 Spacer()
                 
             }
-            
+           
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
@@ -93,14 +93,9 @@ struct ProtofioloView: View {
                             }) {
                                 Text("Save")
                             }
-                            
-                            
                         }
-                        
                     }
-                    
                 }
-                
             }
             .navigationTitle("Edit Profiolo..")
             .onChange(of: vm.searchText) { newValue in
@@ -112,18 +107,45 @@ struct ProtofioloView: View {
         }
     }
     
-    private func saveButtonPressed() {
-        selectedCoin = nil
-        quantityText = ""
-        showCheckmark = true
+    private func handleTaped(coin: CoinModel) {
+        selectedCoin = coin
+         
+        // Check if selectedCoin
+        if let profolioCoin = vm.profolioCoins.first(where: {$0.id == coin.id}),
+           let amount = profolioCoin.currentHoldings{
+            
+            quantityText = "\(amount)"
+        }else {
+            quantityText = ""
+        }
         
+    }
+    
+    private func saveButtonPressed() {
+        
+        guard
+            let coin = selectedCoin,
+            let amount = Double(quantityText)
+        else {
+            return
+        }
+         
+        // Save
+        vm.updateProfolio(coin: coin, amount: amount)
+        
+       
+        showCheckmark = true
+        removeSelected()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             showCheckmark = false
         }
         
-        
-        
+    }
+    
+    func  removeSelected(){
+        selectedCoin = nil
+        quantityText = ""
     }
     
     
