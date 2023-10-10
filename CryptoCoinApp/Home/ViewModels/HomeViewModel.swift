@@ -19,7 +19,7 @@ class HomeViewModel: ObservableObject{
     private let allCoinService = AllCoinService()
     private let marketDataService = MarketDataService()
     private let profolioService = ProfolioService()
-
+    
     var cancellables =  Set<AnyCancellable>()
     
     init () {
@@ -32,65 +32,78 @@ class HomeViewModel: ObservableObject{
         allCoinService.$allCoins
             .combineLatest($searchText)
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .map({ coins, text -> [CoinModel] in
-                if text.isEmpty {
-                    return coins
-                }else {
-                    let searchTextLowercased = text.lowercased()
-                    return coins.filter { coin in
-                        coin.id.lowercased().contains(searchTextLowercased) || coin.name.contains(searchTextLowercased)
-                    }
-                }
-                
-            })
+            .map(mapAllCoinsAndSearching)
             .sink { [weak self] filteredValue in
                 self?.allCoins = filteredValue
-            }
-            .store(in: &cancellables)
-        
-        
-        // Update statistic
-        marketDataService.$marketDataModel
-            .map { receivedData -> [StatisticModel] in
-                var stat: [StatisticModel] = []
-                guard let validData = receivedData else {
-                    return stat
-                }
-                let marketCap = StatisticModel(title: "Market Cap", value: validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
-                let volume = StatisticModel(title: "Volume", value: validData.volumeeCap)
-                let third = StatisticModel(title: "Third", value:  validData.btcDomain)
-                let final = StatisticModel(title: "Final", value:  validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
-                                               
-                stat.append(contentsOf: [marketCap, volume, third, final])
-                return stat
-            }
-            .sink { [weak self] staticDataReceived in
-                self?.stat = staticDataReceived
             }
             .store(in: &cancellables)
         
         // Updating Profolio
         $allCoins
             .combineLatest(profolioService.$profolioEntities)
-           
-            .map { coins, profolioEntities -> [CoinModel] in
-                
-                return coins.compactMap { coin -> CoinModel? in
-                    guard let entity = profolioEntities.first(where: {$0.profolioID == coin.id })  else {
-                        return nil
-                    }
-                    return coin.updateHoldings(amount: entity.profolioAmount)
-                }
-            }
-        
+            .map (mapProfolioEntities)
             .sink { [weak self] receivedCoins in
                 self?.profolioCoins = receivedCoins
             }
             .store(in: &cancellables)
+        
+        
+        // Update statistic
+        marketDataService.$marketDataModel
+            .combineLatest($profolioCoins)
+            .map(statisticsMap)
+            .sink { [weak self] staticDataReceived in
+                self?.stat = staticDataReceived
+            }
+            .store(in: &cancellables)
+        
+        
+    }
+    
+    func mapAllCoinsAndSearching(coins:[CoinModel], text: String) -> [CoinModel] {
+        if text.isEmpty {
+            return coins
+        }else {
+            let searchTextLowercased = text.lowercased()
+            return coins.filter { coin in
+                coin.id.lowercased().contains(searchTextLowercased) || coin.name.contains(searchTextLowercased)
+            }
+        }
+    }
+    
+    func mapProfolioEntities(coins: [CoinModel], profolioEntities: [ProfolioEntity] ) -> [CoinModel] {
+        return coins.compactMap { coin -> CoinModel? in
+            guard let entity = profolioEntities.first(where: {$0.profolioID == coin.id })  else {
+                return nil
+            }
+            return coin.updateHoldings(amount: entity.profolioAmount)
+        }
+    }
+    
+    func statisticsMap(marketModel: MarketDataModel?, profolioCoins: [CoinModel]) -> [StatisticModel] {
+        var stat: [StatisticModel] = []
+        guard let validData = marketModel else {
+            return stat
+        }
+        let marketCap = StatisticModel(title: "Market Cap", value: validData.marketCap, percentageChange: validData.marketCapChangePercentage24HUsd)
+        let volume = StatisticModel(title: "Volume", value: validData.volumeeCap)
+        let third = StatisticModel(title: "Third", value:  validData.btcDomain)
+        
+        let profolioValue =
+        profolioCoins
+            .map({$0.currentHoldingsValue})
+            .reduce(0, +)
+        
+        let profolio =
+        StatisticModel(title: "Profolio",
+                       value: profolioValue.asCurrencyWith2Decimals(),
+                       percentageChange: 0)
+        
+        stat.append(contentsOf: [marketCap, volume, third, profolio])
+        return stat
     }
     
     func updateProfolio(coin: CoinModel, amount: Double) {
         profolioService.updateProfolio(coin: coin, amount: amount)
     }
-     
 }
