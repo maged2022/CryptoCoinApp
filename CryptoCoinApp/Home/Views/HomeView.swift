@@ -93,7 +93,7 @@ extension HomeView {
         .padding(.horizontal)
     }
     
-    // columnsTitle
+    // columns Title
     var columnsTitle: some View {
         HStack {
             Text("Coin")
@@ -103,10 +103,20 @@ extension HomeView {
             }
             Spacer()
             Text("Price")
-                //.frame(width: UIScreen.main.bounds.width / 3.5)
+            Button {
+                withAnimation {
+                    // reload our data
+                    vm.reloadData()
+                }
+            } label: {
+                Image(systemName: "goforward")
+            }
+            .rotationEffect(Angle(degrees: vm.isLoading ? 360 : 0), anchor: .center)
+              
         }
         .padding(.horizontal)
-        .font(.headline)
+        .font(.caption)
+        .foregroundColor(Color.themeColor.secondaryTextColor)
     }
     
     var listHomeView: some View {
@@ -132,17 +142,4 @@ extension HomeView {
             .transition(AnyTransition.move(edge: .leading))
 
         }
-}
-
-
-
-
-
-
-extension AnyTransition {
-    static var slideFromRight: AnyTransition {
-        let insertion = AnyTransition.move(edge: .trailing)
-        let removal = AnyTransition.move(edge: .trailing)
-        return .asymmetric(insertion: insertion, removal: removal)
-    }
 }

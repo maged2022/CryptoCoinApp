@@ -12,9 +12,9 @@ class HomeViewModel: ObservableObject{
     @Published var allCoins: [CoinModel] = []
     @Published var profolioCoins: [CoinModel] = []
     @Published  var searchText = ""
-    
     @Published  var stat : [StatisticModel]  = []
     @Published var profolioArr: [ProfolioEntity] = []
+    @Published var isLoading: Bool = false
     
     private let allCoinService = AllCoinService()
     private let marketDataService = MarketDataService()
@@ -54,10 +54,21 @@ class HomeViewModel: ObservableObject{
             .map(statisticsMap)
             .sink { [weak self] staticDataReceived in
                 self?.stat = staticDataReceived
+                self?.isLoading = false
             }
             .store(in: &cancellables)
         
         
+    }
+    
+    func updateProfolio(coin: CoinModel, amount: Double) {
+        profolioService.updateProfolio(coin: coin, amount: amount)
+    }
+    
+    func reloadData() {
+        isLoading = true
+        allCoinService.downloadingCoins()
+        marketDataService.getData()
     }
     
     func mapAllCoinsAndSearching(coins:[CoinModel], text: String) -> [CoinModel] {
@@ -103,7 +114,5 @@ class HomeViewModel: ObservableObject{
         return stat
     }
     
-    func updateProfolio(coin: CoinModel, amount: Double) {
-        profolioService.updateProfolio(coin: coin, amount: amount)
-    }
+    
 }

@@ -19,7 +19,7 @@ class AllCoinService {
         downloadingCoins()
     }
     
-     private func downloadingCoins() {
+      func downloadingCoins() {
          
          NetworkingManager.fetchData(from: url)
              .decode(type: [CoinModel].self, decoder: JSONDecoder())
