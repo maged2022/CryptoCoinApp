@@ -115,7 +115,7 @@ extension HomeView {
               
         }
         .padding(.horizontal)
-        .font(.caption)
+        .font(.headline)
         .foregroundColor(Color.themeColor.secondaryTextColor)
     }
     

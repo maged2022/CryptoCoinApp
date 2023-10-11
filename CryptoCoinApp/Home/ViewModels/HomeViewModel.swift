@@ -22,6 +22,15 @@ class HomeViewModel: ObservableObject{
     
     var cancellables =  Set<AnyCancellable>()
     
+    enum SortOptions {
+        case holding
+        case holdingReverse
+        case rank
+        case rankReverse
+        case price
+        case priceReverse
+    }
+    
     init () {
         addSubscirpers()
     }
