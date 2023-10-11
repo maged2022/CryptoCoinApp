@@ -15,7 +15,7 @@ class HomeViewModel: ObservableObject{
     @Published  var stat : [StatisticModel]  = []
     @Published var profolioArr: [ProfolioEntity] = []
     @Published var isLoading: Bool = false
-    @Published var sortOption: SortOption = .holding
+    @Published var sortOption: SortOption = .rankReverse
     
     private let allCoinService = AllCoinService()
     private let marketDataService = MarketDataService()
@@ -40,9 +40,10 @@ class HomeViewModel: ObservableObject{
         
         // Update allCoins and filterData searching
         allCoinService.$allCoins
-            .combineLatest($searchText)
+            .combineLatest($searchText, $sortOption)
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .map(filterCoins)
+        // .map(filterCoins)
+            .map(filterAndSortCoins)
             .sink { [weak self] filteredValue in
                 self?.allCoins = filteredValue
             }
@@ -53,7 +54,8 @@ class HomeViewModel: ObservableObject{
             .combineLatest(profolioService.$profolioEntities)
             .map (mapProfolioEntities)
             .sink { [weak self] receivedCoins in
-                self?.profolioCoins = receivedCoins
+                guard let self = self else { return }
+                self.profolioCoins = self.sortProfolioByHolding(coins: receivedCoins)
             }
             .store(in: &cancellables)
         
@@ -82,6 +84,11 @@ class HomeViewModel: ObservableObject{
         HapticManager.notification(type: .success)
     }
     
+    func filterAndSortCoins(coins:[CoinModel], text: String, sort: SortOption) -> [CoinModel]  {
+        var filteredCoin = self.filterCoins(coins: coins, text: text)
+        return self.sortCoins(filterdCoins: filteredCoin, sortOption: sort)
+    }
+    
     func filterCoins(coins:[CoinModel], text: String) -> [CoinModel] {
         if text.isEmpty {
             return coins
@@ -94,29 +101,31 @@ class HomeViewModel: ObservableObject{
     }
     
     func sortCoins(filterdCoins: [CoinModel], sortOption: SortOption) -> [CoinModel] {
-        
         switch sortOption {
-        case .holding:
-            return filterdCoins.sorted(by: {$0.currentHoldingsValue < $1.currentHoldingsValue})
-            
-        case .holdingReverse:
-            return filterdCoins.sorted(by: {$0.currentHoldingsValue > $1.currentHoldingsValue})
-
-        case .rank:
+        case .rank, .holding:
             return filterdCoins.sorted(by: {$0.rank < $1.rank})
-
-        case .rankReverse:
+        case .rankReverse, .holdingReverse:
             return filterdCoins.sorted(by: {$0.rank > $1.rank})
-            
         case .price:
             return filterdCoins.sorted(by: {$0.currentPrice < $1.currentPrice})
-
         case .priceReverse:
             return filterdCoins.sorted(by: {$0.currentPrice > $1.currentPrice})
-
         }
-    
     }
+    
+    func sortProfolioByHolding(coins: [CoinModel]) -> [CoinModel] {
+        switch sortOption {
+        case .holding:
+            return coins.sorted(by: {$0.currentHoldingsValue > $1.currentHoldingsValue})
+        case .holdingReverse:
+            return coins.sorted(by: {$0.currentHoldingsValue < $1.currentHoldingsValue})
+        default:
+            return coins
+        }
+    }
+    
+    
+    
     
     func mapProfolioEntities(coins: [CoinModel], profolioEntities: [ProfolioEntity] ) -> [CoinModel] {
         return coins.compactMap { coin -> CoinModel? in
