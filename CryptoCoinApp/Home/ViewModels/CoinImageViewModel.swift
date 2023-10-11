@@ -26,10 +26,10 @@ class CoinImageViewModel: ObservableObject {
     func  getCoinImage(coinModel: CoinModel){
         if let imaage =  fileManager.getImage(imageName: imageName, fileName: fileName){
           image = imaage
-            print("Downloading from fileManager ...")
+           // print("Downloading from fileManager ...")
         }else {
             downLoadCoinImage(coinModel: coinModel)
-            print("Downloading from api URL ...")
+           // print("Downloading from api URL ...")
         }
     }
     

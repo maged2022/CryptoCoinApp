@@ -36,8 +36,7 @@ struct HomeRowView: View {
                     .foregroundColor(Color.themeColor.greenColor)
             }
         }
-     
-        
+        .background(Color.themeColor.backgroundColor.opacity(0.001))
     
        
     }

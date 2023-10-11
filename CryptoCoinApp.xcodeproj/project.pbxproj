@@ -11,6 +11,7 @@
 		120140AA2AC8AE0200BAC43C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 120140A92AC8AE0200BAC43C /* Preview Assets.xcassets */; };
 		120140B22AC8AE4B00BAC43C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120140B12AC8AE4B00BAC43C /* Color.swift */; };
 		120140CA2AC8BA9500BAC43C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 120140C92AC8BA9500BAC43C /* Assets.xcassets */; };
+		1222ED512AD6DE0800C57AD5 /* DetailsViewLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1222ED502AD6DE0800C57AD5 /* DetailsViewLoading.swift */; };
 		122685402AD03B67006897DB /* ProtofioloView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226853F2AD03B67006897DB /* ProtofioloView.swift */; };
 		122A06412ACC2A70009B5C0C /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122A06402ACC2A70009B5C0C /* SearchBarView.swift */; };
 		122A06432ACC2F62009B5C0C /* UIApllication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122A06422ACC2F62009B5C0C /* UIApllication.swift */; };
@@ -43,6 +44,7 @@
 		120140A92AC8AE0200BAC43C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		120140B12AC8AE4B00BAC43C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		120140C92AC8BA9500BAC43C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../Downloads/Resources/Assets.xcassets; sourceTree = "<group>"; };
+		1222ED502AD6DE0800C57AD5 /* DetailsViewLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewLoading.swift; sourceTree = "<group>"; };
 		1226853F2AD03B67006897DB /* ProtofioloView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtofioloView.swift; sourceTree = "<group>"; };
 		122A06402ACC2A70009B5C0C /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		122A06422ACC2F62009B5C0C /* UIApllication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApllication.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				12A54AEB2ACE32B300D543E3 /* StatisticView.swift */,
 				1280A67A2ACEB5B80022000F /* HomeStatisticView.swift */,
 				1226853F2AD03B67006897DB /* ProtofioloView.swift */,
+				1222ED502AD6DE0800C57AD5 /* DetailsViewLoading.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				12F10DD92ACE6751009D49DE /* MarketDataModel.swift in Sources */,
 				12DAF83F2ACA7C0A00A64B1B /* HomeRowView.swift in Sources */,
 				122A06412ACC2A70009B5C0C /* SearchBarView.swift in Sources */,
+				1222ED512AD6DE0800C57AD5 /* DetailsViewLoading.swift in Sources */,
 				1295DB2A2ACBBFFC00F68C04 /* CoinImageViewModel.swift in Sources */,
 				12DAF83D2ACA7B3E00A64B1B /* AnimationCircle.swift in Sources */,
 				12DAF83B2ACA7B1B00A64B1B /* CircleView.swift in Sources */,
