@@ -69,6 +69,7 @@ class HomeViewModel: ObservableObject{
         isLoading = true
         allCoinService.downloadingCoins()
         marketDataService.getData()
+        HapticManager.notification(type: .success)
     }
     
     func mapAllCoinsAndSearching(coins:[CoinModel], text: String) -> [CoinModel] {
