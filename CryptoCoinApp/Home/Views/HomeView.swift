@@ -96,13 +96,50 @@ extension HomeView {
     // columns Title
     var columnsTitle: some View {
         HStack {
-            Text("Coin")
+            HStack(spacing: 4){
+                Text("Coin")
+                Image(systemName: "chevron.down")
+                    .opacity(( vm.sortOption == .rank || vm.sortOption == .rankReverse ) ? 1 : 0)
+                    .rotationEffect(Angle(degrees:  vm.sortOption == .rank  ? 180 : 0 ))
+            }
+            .onTapGesture {
+                withAnimation {
+                              vm.sortOption = (vm.sortOption == .rank) ? .rankReverse : .rank
+
+                }
+            }
+            
+            
             Spacer()
+            
             if showProfolio {
-                Text("Holdings")
+                HStack(spacing: 4){
+                    Text("Holdings")
+                    Image(systemName: "chevron.down")
+                        .opacity( (vm.sortOption == .holding || vm.sortOption == .holdingReverse) ? 1 : 0)
+                        .rotationEffect(Angle(degrees: vm.sortOption == .holding ? 0 : 180 ))
+                }
+                .onTapGesture {
+                    withAnimation {
+                       vm.sortOption = (vm.sortOption == .holding) ? .holdingReverse : .holding
+                    }
+                }
+              
             }
             Spacer()
-            Text("Price")
+            
+            HStack(spacing: 4){
+                Text("Price")
+                Image(systemName: "chevron.down")
+                    .opacity((vm.sortOption == .price || vm.sortOption == .priceReverse) ? 1 : 0)
+                    .rotationEffect(Angle(degrees: vm.sortOption == .price ? 0 : 180 ))
+            }
+            .onTapGesture {
+                withAnimation {
+                    vm.sortOption = (vm.sortOption == .price) ? .priceReverse : .price
+                }
+            }
+           
             Button {
                 withAnimation {
                     // reload our data
