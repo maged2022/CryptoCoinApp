@@ -5,11 +5,10 @@ import SwiftUI
 
 struct DetailsViewLoading: View {
     @Binding var coin: CoinModel?
-
+    
     var body: some View {
         ZStack {
             if let coin = coin {
-              //  DetailView(coin: coin)
                 DetailView(coin: coin)
             }
         }
@@ -19,17 +18,22 @@ struct DetailsViewLoading: View {
 
 struct DetailView: View {
     
-    let coin: CoinModel
+    @StateObject var vm: DetailViewModel
     
     init(coin: CoinModel) {
-        self.coin = coin
+     
+        _vm = StateObject(wrappedValue: DetailViewModel(coin: coin))
         print("DetailView \(coin.name)")
     }
     
     var body: some View {
-       
-            Text(coin.name)
-        
+        VStack {
+            
+            if let detailCoin = vm.detailCoin  {
+                Text(detailCoin.name ?? "default value")
+                
+            }
+        }
     }
     
 }
