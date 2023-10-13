@@ -38,8 +38,10 @@ struct DetailView: View {
     var body: some View {
               ScrollView {
                   VStack {
-                      Text("")
-                          .frame(height: 150)
+//                      Text("")
+//                          .frame(height: 150)
+                      StatisticChartView()
+                      
                       
                       Text("OVerView")
                           .font(.title)
@@ -95,8 +97,15 @@ struct DetailView: View {
                           
                         }
                       
+                      VStack(alignment: .leading) {
+                          if let homepageURLString = vm.detailCoin?.links?.homepage?.first, let homepageURL = URL(string: homepageURLString) {
+                              Link("Open Example Website", destination: homepageURL)
+                                  .font(.headline)
+                                  .foregroundColor(.blue)
+                                  .frame(maxWidth: .infinity, alignment: .leading)
+                          }
+                      }
                   
-              
                 
               }
                   .padding()
