@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StatisticViwe: View {
+struct StatisticView: View {
     let stat: StatisticModel
     var body: some View {
         VStack(alignment: .leading){

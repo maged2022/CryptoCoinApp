@@ -11,11 +11,14 @@ import Combine
 class DetailViewModel: ObservableObject {
     
     @Published var detailCoin: CoinDetailModel? = nil
-    
+    let coin: CoinModel
     private let coinDetailService: CoinDetailService
     private var cancellables = Set<AnyCancellable>()
     
+    
+    
     init(coin: CoinModel) {
+        self.coin = coin
         coinDetailService = CoinDetailService(coin: coin)
         addSubsribers()
     }
