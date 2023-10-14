@@ -118,7 +118,7 @@ extension HomeView {
                 Text("Coin")
                 Image(systemName: "chevron.down")
                     .opacity(( vm.sortOption == .rank || vm.sortOption == .rankReverse ) ? 1 : 0)
-                    .rotationEffect(Angle(degrees:  vm.sortOption == .rank  ? 180 : 0 ))
+                    .rotationEffect(Angle(degrees:  vm.sortOption == .rank  ? 0 : 180 ))
             }
             .onTapGesture {
                 withAnimation {

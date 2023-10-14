@@ -9,11 +9,20 @@ import SwiftUI
 
 @main
 struct CryptoCoinAppApp: App {
+    
+    @State private var showLaunchScreen: Bool = true
+    
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                HomeView()
-                
+            ZStack {
+                NavigationView {
+                    HomeView()
+                    
+                }
+                if showLaunchScreen {
+                    LaunchView(showLaunchScreen: $showLaunchScreen)
+                }
+               
             }
         }
     }

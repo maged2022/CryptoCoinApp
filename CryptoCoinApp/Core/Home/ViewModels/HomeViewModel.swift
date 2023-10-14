@@ -15,7 +15,7 @@ class HomeViewModel: ObservableObject{
     @Published  var stat : [StatisticModel]  = []
     @Published var profolioArr: [ProfolioEntity] = []
     @Published var isLoading: Bool = false
-    @Published var sortOption: SortOption = .holding
+    @Published var sortOption: SortOption = .rank
     
     private let allCoinService = AllCoinService()
     private let marketDataService = MarketDataService()
