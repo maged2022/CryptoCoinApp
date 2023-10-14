@@ -19,10 +19,14 @@ struct CryptoCoinAppApp: App {
                     HomeView()
                     
                 }
-                if showLaunchScreen {
-                    LaunchView(showLaunchScreen: $showLaunchScreen)
+                ZStack {
+                    if showLaunchScreen {
+                        LaunchView(showLaunchScreen: $showLaunchScreen)
+                            .transition(.move(edge: .leading))
+                    }
                 }
-               
+                .zIndex(2)
+                
             }
         }
     }
