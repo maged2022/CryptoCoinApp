@@ -19,6 +19,7 @@ struct CryptoCoinAppApp: App {
                     HomeView()
                     
                 }
+                .navigationViewStyle(StackNavigationViewStyle())
                 ZStack {
                     if showLaunchScreen {
                         LaunchView(showLaunchScreen: $showLaunchScreen)
