@@ -31,14 +31,8 @@ struct HomeView: View {
             VStack {
                 homeHeaderView
                 
-                if showProfolio {
-                    HomeStateView(vm: vm, showProfile: $showProfolio)
-                        .transition(AnyTransition.move(edge: .trailing))
-                }
-                if !showProfolio {
-                    HomeStateView(vm: vm, showProfile: $showProfolio)
-                        .transition(AnyTransition.move(edge: .leading))
-                }
+                HomeStateView(vm: vm, showProfile: $showProfolio)
+                    .transition(AnyTransition.move(edge:showProfolio ? .trailing : .trailing))
                 
                 
                 SearchBarView(searchText: $vm.searchText)
