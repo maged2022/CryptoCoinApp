@@ -13,7 +13,7 @@ extension Double {
     /// ```
     /// Convert 1234.56 to $1,234.56
     /// ```
-    private var currencyFormatter2: NumberFormatter {
+     var currencyFormatter2: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.usesGroupingSeparator = true
         formatter.numberStyle = .currency
@@ -41,7 +41,7 @@ extension Double {
     /// Convert 12.3456 to $12.3456
     /// Convert 0.123456 to $0.123456
     /// ```
-    private var currencyFormatter6: NumberFormatter {
+     var currencyFormatter6: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.usesGroupingSeparator = true
         formatter.numberStyle = .currency
