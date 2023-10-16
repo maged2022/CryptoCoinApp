@@ -23,6 +23,7 @@ class AllCoinService {
          
          NetworkingManager.fetchData(from: url)
              .decode(type: [CoinModel].self, decoder: JSONDecoder())
+             .receive(on: DispatchQueue.main)
              .sink(receiveCompletion: NetworkingManager.handleCompletion,
                    receiveValue: { [weak self] receivedValue in
                  self?.allCoins = receivedValue

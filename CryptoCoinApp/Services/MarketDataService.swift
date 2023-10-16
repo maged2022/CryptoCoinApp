@@ -25,6 +25,7 @@ class MarketDataService {
         
         NetworkingManager.fetchData(from: urlString)
             .decode(type: GlobalData.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion:  NetworkingManager.handleCompletion) { [weak self] recivedData in
                 self?.marketDataModel = recivedData.data
             }

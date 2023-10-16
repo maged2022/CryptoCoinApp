@@ -29,6 +29,7 @@ class CoinImageService {
                 return UIImage(data: data)
                 
             }
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: NetworkingManager.handleCompletion,
                   receiveValue: { [weak self] imageReceived in
                 self?.image = imageReceived
