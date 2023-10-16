@@ -32,7 +32,6 @@ struct HomeView: View {
                 homeHeaderView
                 
                 HomeStateView(vm: vm, showProfile: $showProfolio)
-                    .transition(AnyTransition.move(edge:showProfolio ? .trailing : .trailing))
                 
                 
                 SearchBarView(searchText: $vm.searchText)
