@@ -20,6 +20,7 @@ struct SearchBarView: View {
                 .overlay(
                     Image(systemName: "xmark.circle.fill")
                         .font(.title2)
+                        .foregroundColor(.gray)
                         .padding()
                         .opacity(searchText.isEmpty ? 0 : 1)
                         .onTapGesture {
