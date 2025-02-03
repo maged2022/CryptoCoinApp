@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @StateObject var vm = HomeViewModel()
-    @State private var showProfolio: Bool = false
+    @State private var showProfolio:  Bool = false
     @State private var showProfolioView: Bool = false // show sheet of profolioView
     @State private var selectedCoin: CoinModel? = nil
     @State private var isDetailsViewActive = false
